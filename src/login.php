@@ -2,8 +2,11 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Iniciar Sesión</title>
+        <link href="../style/estilo.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <center>
+            <body>
         <?php
             include_once 'Class_OperacionesBBDD.php';
             include_once 'Class_OperacionesEXT.php';
@@ -19,8 +22,8 @@
                 if (!isset($_POST["auto"]) && !isset($_POST["manual"]) && !isset($_POST["acceder"])) {//formulario tipo de acceso
                     echo '
                         <form action="#" method="post">
-                            <input type="submit" name="auto" value="Acceso Automatico" />
-                            <input type="submit" name="manual" value="Acceso Manual" />
+                            <input class="btlogin" type="submit" name="auto" value="Acceso Automatico" />
+                            <input class="btlogin" type="submit" name="manual" value="Acceso Manual" />
                         </form>
                     ';
                 }
@@ -31,8 +34,8 @@
                             <input type="text" name="user" placeholder="Escribe Usuario" /></br></br>
                             <label for="pass">Contraseña</label>                     
                             <input type="password" name="pass" placeholder="Escribe la Contraseña" /></br></br>
-                            <input type="submit" name="acceder" value="Acceder" />
-                            <input type="reset" name="cancelar" value="Cancelar" />
+                            <input class="btlogin" type="submit" name="acceder" value="Acceder" />
+                            <input class="btlogin" type="reset" name="cancelar" value="Cancelar" />
                         </form>
                     ';
                     echo "<br><a href='login.php'>VOLVER</a>";
@@ -76,5 +79,7 @@
                 }
             }
         ?>
+            <body>
+        </center>
     </body>
 </html>
