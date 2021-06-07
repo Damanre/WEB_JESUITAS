@@ -40,7 +40,7 @@
                             echo '<tr>';
                             echo '<th>Nombre</th><th>Apellidos</th>';
                             while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td><a href="delAlumno.php?id='.$fila["IdAlumno"].'">BORRAR</a></td><td>EDITAR</td></tr>';
+                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td><a href="delAlumno.php?id='.$fila["IdAlumno"].'">BORRAR</a></td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';

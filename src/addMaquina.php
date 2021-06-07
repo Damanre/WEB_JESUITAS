@@ -60,7 +60,7 @@
                             echo '<tr>';
                             echo '<th>IP</th><th>Lugar</th><th>Alumno</th>';
                             while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Ip"] . '</td><td>' . $fila["Lugar"] . '</td><td>' . $fila["Alumno"] . '</td><td><a href="delMaquinas.php?ip='.$fila["Ip"].'">BORRAR</a></td><td>EDITAR</td></tr>';
+                                echo '<tr><td>' . $fila["Ip"] . '</td><td>' . $fila["Lugar"] . '</td><td>' . $fila["Alumno"] . '</td><td><a href="delMaquinas.php?ip='.$fila["Ip"].'">BORRAR</a></td><td><a href="modMaquina.php?ip='.$fila["Ip"].'">EDITAR</a></td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';

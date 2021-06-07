@@ -38,7 +38,7 @@
                             echo '<tr>';
                             echo '<th>Nombre</th>';
                             while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Nombre"] . '</td><td><a href="delLugares.php?lugar='.$fila["Nombre"].'">BORRAR</a></td><td>EDITAR</td></tr>';
+                                echo '<tr><td>' . $fila["Nombre"] . '</td><td><a href="delLugares.php?lugar='.$fila["Nombre"].'">BORRAR</a></td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';
