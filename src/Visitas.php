@@ -13,13 +13,14 @@
             require_once "Class_OperacionesEXT.php";
             echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
             echo "<h1>Hola " . $_SESSION["nombre"] . "</h1><br>";
-            $conexion = conectar();//Conexion BBDD
-            if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                echo '<h1>Error de conexión: ' . comprobarConexion($conexion) . '</h1>';//Mostrar Error
+            $ObjBBDD=new OperacionesBBDD();
+            $ObjBBDD->conectar();//Conexion BBDD
+            if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</h1>';//Mostrar Error
             } else {
                 if (!isset($_POST["Visitar"])) {//formulario visitar
                     $sql = "SELECT * FROM lugar;";
-                    $resultado = ejecutarConsulta($conexion, $sql);
+                    $resultado = $ObjBBDD->ejecutarConsulta($sql);
                     echo '
                     <center>
                         <h1>VISITAR</h1><br><br>';
@@ -37,7 +38,7 @@
                         
                         <select name="lugar">
                             ';//desplegable lugares
-                    while ($fila = extraerFila($resultado)) {
+                    while ($fila = $ObjBBDD->extraerFila($resultado)) {
                         if ($fila["IdLugar"] != $_SESSION["lugar"]) {
                             echo '<option value="' . $fila['IdLugar'] . '">' . $fila['Nombre'] . '</option>';
                         }
@@ -49,31 +50,30 @@
                     </form>
                     </center>
                     ';
-                    echo "<br><a href='indexUser.php'>VOLVER</a>";
                 } else {
                     $sql = "SELECT * FROM maquina WHERE IdLugar='" . $_POST['lugar'] . "';";//consulta info maquina destino
-                    $resultado = ejecutarConsulta($conexion, $sql);//ejecutar consulta
+                    $resultado = $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
                     $ipl = extraerFila($resultado);//extraer filas
                     $sql = 'INSERT INTO visita (IpLugar, IpJesuita, FechaHora) VALUES ("' . $ipl['Ip'] . '","' . $_SESSION['ip'] . '",NOW());';//consulta agregar visita
-                    ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                    if ($error = comprobarError($conexion)) {//comprobar error
+                    $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
+                    if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                         echo $error;
                         echo "<br><br><a href='Visitas.php'>VOLVER</a>";
                     } else {
                         echo 'OK';
                         $sql ="SELECT l.Nombre FROM lugar l INNER JOIN maquina m ON l.IdLugar=m.IdLugar INNER JOIN visita v ON v.IpLugar=m.Ip ORDER BY v.IdVisita DESC LIMIT 5";
-                        $resultado=ejecutarConsulta($conexion,$sql);
+                        $resultado=$ObjBBDD->ejecutarConsulta($sql);
                         //Consulta al ultimo lugar visitado
-                        if($error=comprobarError($conexion)){
+                        if($error=$ObjBBDD->comprobarError()){
                             echo $error;
                         }else{
                             $i=0;
-                            while ($ulugar=extraerFila($resultado)) {
+                            while ($ulugar=$ObjBBDD->extraerFila($resultado)) {
                                 setcookie($i,$ulugar["Nombre"],time()+36000);
                                 $i++;
                             }
                         }
-                        echo "<br><a href='indexUser.php'>CONTINUAR</a>";
+                        echo "<br><a href='Visitas.php'>CONTINUAR</a>";
                     }
                 }
             }

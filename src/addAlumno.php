@@ -12,9 +12,10 @@
                 require_once "Class_OperacionesBBDD.php";
                 echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
-                $conexion = conectar();//Conexion BBDD
-                if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                    echo '<h1>Error de conexión: ' . comprobarConexion($conexion) . '</h1>';//Mostrar Error
+                $ObjBBDD=new OperacionesBBDD();
+                $ObjBBDD->conectar();//Conexion BBDD
+                if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                    echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</h1>';//Mostrar Error
                 } else {
                     if (!isset($_POST["Add"])) {//formulario agregar alumno
                         echo '
@@ -31,15 +32,15 @@
                             </center>
                         ';
                         $sql = "select * from alumno";
-                        $resultado=ejecutarConsulta($conexion,$sql);
+                        $resultado=$ObjBBDD->ejecutarConsulta($sql);
                         echo '<div>';
                         echo '<h2>Alumnos</h2>';
-                        if (filasObtenidas($resultado) > 0) {
+                        if ($ObjBBDD->filasObtenidas($resultado) > 0) {
                             echo '<table>';
                             echo '<tr>';
                             echo '<th>Nombre</th><th>Apellidos</th>';
-                            while ($fila = extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td>BORRAR</td><td>EDITAR</td></tr>';
+                            while ($fila = $ObjBBDD->extraerFila($resultado)) {
+                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td><a href="delAlumno.php?id='.$fila["IdAlumno"].'">BORRAR</a></td><td>EDITAR</td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';
@@ -53,8 +54,8 @@
                         }   
                     } else {
                         $sql = 'INSERT INTO alumno (Nombre, Apellidos) VALUES ("' . $_POST['nombre'] . '","' . $_POST['apellidos'] . '");';//consulta añadir alumno
-                        ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                        if ($error = comprobarError($conexion)) {//Comprobar error
+                        $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                        if ($error = $ObjBBDD->comprobarError()) {//Comprobar error
                             echo $error;
                             echo "<br><a href='addAlumno.php'>VOLVER</a>";
                         } else {

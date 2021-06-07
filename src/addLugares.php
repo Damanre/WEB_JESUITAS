@@ -12,9 +12,10 @@
                 require_once "Class_OperacionesBBDD.php";
                 echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
-                $conexion = conectar();//Conexion BBDD
-                if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                    echo '<h1>Error de conexión: ' . $conexion->connect_error . '</h1>';//Mostrar Error
+                $ObjBBDD=new OperacionesBBDD();
+                $ObjBBDD->conectar();//Conexion BBDD
+                if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                    echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</h1>';//Mostrar Error
                 } else {
                     if (!isset($_POST["Add"])) {//formulario agregar lugar
                         echo '
@@ -29,15 +30,15 @@
                             </center>
                             ';
                         $sql = "select * from lugar";
-                        $resultado=ejecutarConsulta($conexion,$sql);
+                        $resultado=$ObjBBDD->ejecutarConsulta($sql);
                         echo '<div>';
                         echo '<h2>Lugares</h2>';
-                        if (filasObtenidas($resultado) > 0) {
+                        if ($ObjBBDD->filasObtenidas($resultado) > 0) {
                             echo '<table>';
                             echo '<tr>';
                             echo '<th>Nombre</th>';
-                            while ($fila = extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>BORRAR</td><td>EDITAR</td></tr>';
+                            while ($fila = $ObjBBDD->extraerFila($resultado)) {
+                                echo '<tr><td>' . $fila["Nombre"] . '</td><td><a href="delLugares.php?lugar='.$fila["Nombre"].'">BORRAR</a></td><td>EDITAR</td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';
@@ -51,9 +52,9 @@
                         }
                     } else {
                         $sql = 'INSERT INTO lugar (Nombre) VALUES ("' . $_POST['nombre'] . '");';//consulta agregar lugar
-                        ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                        if ($error = comprobarError($conexion)) {//comprobar error
-                            echo $error;
+                        $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                        if ($ObjBBDD->comprobarError()) {//comprobar error
+                            echo $ObjBBDD->comprobarError();
                             echo "<br><a href='addLugares.php'>VOLVER</a>";
                         } else {
                             header("LOCATION:addLugares.php");

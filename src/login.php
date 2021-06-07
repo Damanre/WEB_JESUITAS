@@ -9,10 +9,11 @@
             include_once 'Class_OperacionesEXT.php';
             error_reporting(0);
             //Conexion BBDD
-            $conexion = conectar();
+            $ObjBBDD=new OperacionesBBDD();
+            $ObjBBDD->conectar();
             //Comprobar conexion BBDD
-            if (comprobarConexion($conexion)) {
-                echo '<h1>Error de conexión: ' . comprobarConexion($conexion).'</h1>';//Mostrar Error
+            if ($ObjBBDD->comprobarConexion()) {
+                echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion().'</h1>';//Mostrar Error
                 echo "<br><a href='login.php'>VOLVER</a>";
             }else {
                 if (!isset($_POST["auto"]) && !isset($_POST["manual"]) && !isset($_POST["acceder"])) {//formulario tipo de acceso
@@ -38,16 +39,16 @@
                 }
                 if (isset($_POST["auto"])) {//proceso acceso automatico
                     $sql = "SELECT * FROM maquina AS m INNER JOIN alumno AS a ON m.IdAlumno = a.IdAlumno  WHERE m.Ip='".getIp()."';";//consulta comprobar si existe maquina
-                    $resultado=ejecutarConsulta($conexion, $sql);//ejecuta consulta
-                    if(filasObtenidas($resultado) != 0) {//comprueba error
-                        $fila = extraerFila($resultado);//extrae filas consulta
+                    $resultado=$ObjBBDD->ejecutarConsulta($sql);//ejecuta consulta
+                    if($ObjBBDD->filasObtenidas($resultado) != 0) {//comprueba error
+                        $fila = $ObjBBDD->extraerFila($resultado);//extrae filas consulta
                         session_start();//inicia sesion y assigna variables sesion
                         $_SESSION["ip"] = $fila["Ip"];
                         $_SESSION["id"] = $fila["IdAlumno"];
                         $_SESSION["jesuita"] = $fila["Jesuita"];
                         $_SESSION["nombre"] = $fila["Nombre"];
                         $_SESSION["lugar"] = $fila["IdLugar"];
-                        header("Location:indexUser.php");//redireccion
+                        header("Location:Visitas.php");//redireccion
                     }else {
                         echo '<h1>NO PUEDES ACCEDER DESDE ESTE EQUIPO</h1>';//si no existe la maquina
                         echo "<br><a href='login.php'>VOLVER</a>";
@@ -55,9 +56,9 @@
                 }
                 if (isset($_POST["acceder"])) {//proceso acceso manual
                     $sql = "SELECT * FROM usuario WHERE Usuario = '" . $_POST["user"] . "' ;";//consulta comprobar si existe administrador
-                    $resultado=ejecutarConsulta($conexion, $sql);//ejecuta consulta
-                    if(filasObtenidas($resultado) != 0) {//comprueba error
-                        $fila = extraerFila($resultado);//extrae filas consulta
+                    $resultado=$ObjBBDD->ejecutarConsulta($sql);//ejecuta consulta
+                    if($ObjBBDD->filasObtenidas($resultado) != 0) {//comprueba error
+                        $fila = $ObjBBDD->extraerFila($resultado);//extrae filas consulta
                         if(comprobarHash($_POST['pass'],$fila['Pass'])){
                             session_start();//inicia sesion y assigna variables sesion
                             $_SESSION["id"] = $fila["IdAdmin"];

@@ -13,15 +13,16 @@
                 require_once 'Class_OperacionesEXT.php';
                 echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
-                $conexion = conectar();//Conexion BBDD
-                if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                    echo '<h1>Error de conexión: ' . comprobarConexion($conexion) . '</h1>';//Mostrar Error
+                $ObjBBDD=new OperacionesBBDD();
+                $ObjBBDD->conectar();//Conexion BBDD
+                if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                    echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</h1>';//Mostrar Error
                 } else {
                     if (!isset($_POST["Add"])) {//formulario agregar maquina
                         $sql = "SELECT * FROM lugar;";
-                        $resultado = ejecutarConsulta($conexion, $sql);
+                        $resultado = $ObjBBDD->ejecutarConsulta($sql);
                         $sql2 = "SELECT * FROM alumno;";
-                        $resultado2 = ejecutarConsulta($conexion, $sql2);
+                        $resultado2 = $ObjBBDD->ejecutarConsulta($sql2);
                         echo getIp();
                         echo '
                             <center>
@@ -32,7 +33,7 @@
                                     <label for="lugar">LUGAR</label>
                                     <select name="lugar">
                                         ';//desplegable lugares
-                        while ($fila = extraerFila($resultado)) {
+                        while ($fila = $ObjBBDD->extraerFila($resultado)) {
                             echo '<option value="' . $fila['IdLugar'] . '">' . $fila['Nombre'] . '</option>';
                         }
                         echo '
@@ -40,7 +41,7 @@
                                     <label for="alumno">ALUMNO</label>
                                     <select name="alumno">
                                         ';//desplegable alumnos
-                        while ($fila = extraerFila($resultado2)) {
+                        while ($fila = $ObjBBDD->extraerFila($resultado2)) {
                             echo '<option value="' . $fila['IdAlumno'] . '">' . $fila['Nombre'] . ' ' . $fila['Apellidos'] . '</option>';
                         }
                         echo '
@@ -51,15 +52,15 @@
                             </center>
                             ';
                         $sql = "select m.Ip,l.Nombre as Lugar, a.Nombre as Alumno from maquina m INNER JOIN lugar l ON m.IdLugar=l.IdLugar INNER JOIN alumno a ON m.IdAlumno=a.IdAlumno";
-                        $resultado=ejecutarConsulta($conexion,$sql);
+                        $resultado=$ObjBBDD->ejecutarConsulta($sql);
                         echo '<div>';
                         echo '<h2>Maquinas</h2>';
-                        if (filasObtenidas($resultado) > 0) {
+                        if ($ObjBBDD->filasObtenidas($resultado) > 0) {
                             echo '<table>';
                             echo '<tr>';
                             echo '<th>IP</th><th>Lugar</th><th>Alumno</th>';
-                            while ($fila = extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Ip"] . '</td><td>' . $fila["Lugar"] . '</td><td>' . $fila["Alumno"] . '</td><td>BORRAR</td><td>EDITAR</td></tr>';
+                            while ($fila = $ObjBBDD->extraerFila($resultado)) {
+                                echo '<tr><td>' . $fila["Ip"] . '</td><td>' . $fila["Lugar"] . '</td><td>' . $fila["Alumno"] . '</td><td><a href="delMaquinas.php?ip='.$fila["Ip"].'">BORRAR</a></td><td>EDITAR</td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';
@@ -74,8 +75,8 @@
                         }
                     } else {
                         $sql = 'INSERT INTO maquina (Ip, IdLugar, IdAlumno) VALUES ("' . $_POST['ip'] . '","' . $_POST['lugar'] . '","' . $_POST['alumno'] . '");';//consulta agregar maquina
-                        ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                        if ($error = comprobarError($conexion)) {//comprobar error
+                        $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                        if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                             echo $error;
                             echo "<br><a href='addMaquina.php'>VOLVER</a>";
                         } else {

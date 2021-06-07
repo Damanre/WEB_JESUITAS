@@ -9,9 +9,10 @@
             require_once "Class_OperacionesBBDD.php";
             require_once "Class_OperacionesEXT.php";
             error_reporting(0);
-            $conexion=conectarInstalador();//Conexion BBDD
-            if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                echo '<h1>Error de conexión: ' . $conexion->connect_error.'</h1>';//Mostrar Error
+            $ObjBBDD=new OperacionesBBDD();
+            $ObjBBDD->conectarInstalador();//Conexion BBDD
+            if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion().'</h1>';//Mostrar Error
             }else {
                 if (!isset($_POST["Instalar"])) {//formulario agregar super admin
                     echo '
@@ -34,26 +35,26 @@
                         header('Location:inicio.php');//redireccion
                     }
                     $sql = file_get_contents("../sql/BBDD_Pruebas.sql");//consulta script bbdd
-                    ejecutarMultiConsulta($conexion, $sql);//ejecutar consulta
-                    if($error=comprobarError($conexion)){//comprobar error
-                        echo $error;
+                    $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
+                    if($ObjBBDD->comprobarError()){//comprobar error
+                        echo $ObjBBDD->comprobarError();
                         echo "<br><a href='inicio.php'>VOLVER</a>";
                     }else{
                         echo 'OK';
                         echo "<br><a href='inicio.php'>VOLVER</a>";
                     }
-                    cerrarConexion($conexion);//cierre conexion
-                    sleep(1.5);//espera para que el servidor ejecute la consulta anterior a tiempo
-                    $conexion = conectar();//conexion BBDD
+                    $ObjBBDD->cerrarConexion();//cierre conexion
+                    sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
+                    $ObjBBDD->conectar();//conexion BBDD
                     $sql = 'INSERT INTO usuario (Usuario,Pass,Tipo) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '", 1);';//consulta agregar admin
-                    ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                    if($error=comprobarError($conexion)){//comprobar error
-                        echo $error;
+                    $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
+                    if($ObjBBDD->comprobarError()){//comprobar error
+                        echo $ObjBBDD->comprobarError();
                         echo "<br><a href='inicio.php'>VOLVER</a>";
                     }else{
                         header("Location:login.php");//redireccion
                     }
-                    cerrarConexion($conexion);//cerrar conexion
+                    $ObjBBDD->cerrarConexion();//cerrar conexion
                 }
             }
         ?>

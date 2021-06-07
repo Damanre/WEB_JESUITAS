@@ -14,9 +14,10 @@
                 require_once "Class_OperacionesEXT.php";
                 echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
-                $conexion = conectar();//Conexion BBDD
-                if (comprobarConexion($conexion)) {//Comprobar conexion BBDD
-                    echo '<h1>Error de conexión: ' . comprobarConexion($conexion) . '</h1>';//Mostrar Error
+                $ObjBBDD=new OperacionesBBDD();
+                $ObjBBDD->conectar();//Conexion BBDD
+                if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
+                    echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</h1>';//Mostrar Error
                 } else {
                     if (!isset($_POST["Add"])) {//formulario agregar admin
                         echo '
@@ -35,15 +36,15 @@
                             </center>
                             ';
                             $sql = "select * from usuario where tipo=0";
-                            $resultado=ejecutarConsulta($conexion,$sql);
+                            $resultado=$ObjBBDD->ejecutarConsulta($sql);
                             echo '<div>';
                             echo '<h2>Profesores</h2>';
-                            if (filasObtenidas($resultado) > 0) {
+                            if ($ObjBBDD->filasObtenidas($resultado) > 0) {
                                 echo '<table>';
                                 echo '<tr>';
                                 echo '<th>Nombre</th>';
-                                while ($fila = extraerFila($resultado)) {
-                                    echo '<tr><td>' . $fila["Usuario"] . '</td><td>BORRAR</td></tr>';
+                                while ($fila = $ObjBBDD->extraerFila($resultado)) {
+                                    echo '<tr><td>' . $fila["Usuario"] . '</td><td><a href="delProfesor.php?id='.$fila["IdUser"].'">BORRAR</a></td></tr>';
                                 }
                                 echo '</tr>';
                                 echo '</table>';
@@ -57,8 +58,8 @@
                             echo "<br><a href='addProfesor.php'>VOLVER</a>";
                         }else{
                            $sql = 'INSERT INTO usuario (Usuario,Pass) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '");';//consulta añadir administrador
-                            ejecutarConsulta($conexion, $sql);//ejecutar consulta
-                            if ($error = comprobarError($conexion)) {//comprobar error
+                            $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                            if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                                 echo $error;
                                 echo "<br><a href='addMaquina.php'>VOLVER</a>";
                             } else {
