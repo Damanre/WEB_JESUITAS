@@ -28,8 +28,11 @@
                             echo'Ultimos lugares visitados:</br><br>';
                             for($c=0;$c<5;$c++){
                                 if(isset($_COOKIE[$c])){
-                                    echo $_COOKIE[$c].'<br>';
+                                    echo $_COOKIE[$c].'<br><br>';
                                 }
+                            }
+                            if(!isset($_COOKIE[0])){
+                                echo 'NO HAY VISITAS<br><br>';
                             }
                         }
                         echo '
@@ -53,7 +56,7 @@
                 } else {
                     $sql = "SELECT * FROM maquina WHERE IdLugar='" . $_POST['lugar'] . "';";//consulta info maquina destino
                     $resultado = $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
-                    $ipl = extraerFila($resultado);//extraer filas
+                    $ipl = $ObjBBDD->extraerFila($resultado);//extraer filas
                     $sql = 'INSERT INTO visita (IpLugar, IpJesuita, FechaHora) VALUES ("' . $ipl['Ip'] . '","' . $_SESSION['ip'] . '",NOW());';//consulta agregar visita
                     $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
                     if ($error = $ObjBBDD->comprobarError()) {//comprobar error
