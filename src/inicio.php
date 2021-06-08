@@ -28,7 +28,6 @@
                             <label for="pass2">REPETIR CONTRASEÑA</label>
                             <input type="password" name="pass2" placeholder="Repetir Contraseña" /></br></br>
                             <input type="submit" class="opc" name="Instalar" value="INSTALAR" />
-                            <input type="reset" class="opc" name="Cancelar" value="CANCELAR" />
                         </form>
                     </center>
                 ';
@@ -41,24 +40,26 @@
                             echo '<span class="error">NO COINCIDEN LAS CONTRASEÑAS</span><br>';//si no existe la maquina
                             echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                         }
-                        $sql = file_get_contents("../sql/BBDD_Pruebas.sql");//consulta script bbdd
-                        $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
-                        if($ObjBBDD->comprobarError()) {//comprobar error
-                            echo $ObjBBDD->comprobarError();
-                            echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
-                        }else{
-                            $ObjBBDD->cerrarConexion();//cierre conexion
-                            sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
-                            $ObjBBDD->conectar();//conexion BBDD
-                            $sql = 'INSERT INTO usuario (Usuario,Pass,Tipo) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '", 1);';//consulta agregar admin
-                            $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
-                            if($ObjBBDD->comprobarError()){//comprobar error
+                        else{
+                            $sql = file_get_contents("../sql/BBDD_Pruebas.sql");//consulta script bbdd
+                            $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
+                            if($ObjBBDD->comprobarError()) {//comprobar error
                                 echo $ObjBBDD->comprobarError();
                                 echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                             }else{
-                                header("Location:login.php");//redireccion
+                                $ObjBBDD->cerrarConexion();//cierre conexion
+                                sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
+                                $ObjBBDD->conectar();//conexion BBDD
+                                $sql = 'INSERT INTO usuario (Usuario,Pass,Tipo) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '", 1);';//consulta agregar admin
+                                $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
+                                if($ObjBBDD->comprobarError()){//comprobar error
+                                    echo $ObjBBDD->comprobarError();
+                                    echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
+                                }else{
+                                    header("Location:login.php");//redireccion
+                                }
+                                $ObjBBDD->cerrarConexion();//cerrar conexion
                             }
-                            $ObjBBDD->cerrarConexion();//cerrar conexion
                         }
                     }
                 }

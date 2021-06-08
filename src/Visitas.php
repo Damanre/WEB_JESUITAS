@@ -41,7 +41,7 @@ session_start();
                                     $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
                                     if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                                         echo $error;
-                                        echo "<br><a class='back' href='login.php'>Salir</a>";
+                                        echo "<br><a class='back' href='Visitas.php'>Salir</a>";
                                     } else {
                                         $sql = "SELECT * FROM maquina AS m INNER JOIN alumno AS a ON m.IdAlumno = a.IdAlumno  WHERE m.Ip='".$_SESSION['ip']."';";//consulta comprobar si existe maquina
                                         $resultado=$ObjBBDD->ejecutarConsulta($sql);//ejecuta consulta

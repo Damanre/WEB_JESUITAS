@@ -28,7 +28,6 @@ session_start();
                                     <label for="nombre">LUGAR</label>
                                     <input type="text" name="nombre" placeholder="Nombre Lugar" /></br></br>
                                     <input class="opc" type="submit" name="Add" value="AÑADIR" />
-                                    <input class="opc" type="reset" name="Cancelar" value="CANCELAR" />
                                 </form>
                             </center>
                             ';

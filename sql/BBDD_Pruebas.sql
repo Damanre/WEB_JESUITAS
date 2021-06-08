@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS jesuitas;
 CREATE DATABASE IF NOT EXISTS jesuitas DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 USE jesuitas;
 
@@ -37,6 +38,7 @@ CREATE TABLE Maquina(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 CREATE UNIQUE INDEX lugarmaquina ON Maquina (IdLugar);
 CREATE UNIQUE INDEX jesuitamaquina ON Maquina (Jesuita);
+CREATE UNIQUE INDEX alumnomaquina ON Maquina (IdAlumno);
 
 -- Estructura tabla Visita
 CREATE TABLE Visita(
