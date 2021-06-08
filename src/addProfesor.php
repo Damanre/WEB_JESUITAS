@@ -55,29 +55,33 @@ session_start();
                             }
                             echo "<br><a href='indexAdmin.php'class='back'>VOLVER</a>";
                     } else {
-                        if ($_POST['pass'] != $_POST['pass2']) {//comprobar que coinciden las contraseñas
-                            echo 'NO COINCIDEN LAS CONTRASEÑAS';
+                        if(empty($_POST["user"]) || empty($_POST["pass"]) || empty($_POST["pass2"])){
+                            echo '<span class="error">NO PUEDES DEJAR EN BLANCO NINGUN CAMPO</span><br>';//si no existe la maquina
                             echo "<br><a href='addProfesor.php'class='back'>VOLVER</a>";
                         }else{
-                           $sql = 'INSERT INTO usuario (Usuario,Pass) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '");';//consulta añadir administrador
-                            $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
-                            if ($error = $ObjBBDD->comprobarError()) {//comprobar error
-                                echo $error;
-                                echo "<br><a href='addMaquina.php'class='back'>VOLVER</a>";
-                            } else {
-                                header("LOCATION:addProfesor.php");
+                            if ($_POST['pass'] != $_POST['pass2']) {//comprobar que coinciden las contraseñas
+                                echo '<span class="error">NO COINCIDEN LAS CONTRASEÑAS</span><br>';//si no existe la maquina
+                                echo "<br><a href='addProfesor.php'class='back'>VOLVER</a>";
+                            }else{
+                                $sql = 'INSERT INTO usuario (Usuario,Pass) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '");';//consulta añadir administrador
+                                $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                                if ($error = $ObjBBDD->comprobarError()) {//comprobar error
+                                    echo $error;
+                                    echo "<br><a href='addMaquina.php'class='back'>VOLVER</a>";
+                                } else {
+                                    header("LOCATION:addProfesor.php");
+                                }
                             }
                         }
-
                     }
                 }
             }else{
-                echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
+                echo '<span class="error">NO PUEDES ACCEDER A ESTE SITIO</span>
                     <br><a href="login.php"class="back">VOLVER</a>
                 ';
             }
         }else{
-            echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
+            echo '<span class="error">NO PUEDES ACCEDER A ESTE SITIO</span>
                 <br><a href="login.php"class="back">VOLVER</a>
             ';
         }

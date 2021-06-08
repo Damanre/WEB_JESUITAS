@@ -65,7 +65,7 @@ if ($ObjBBDD->comprobarConexion()) {
             }
             echo '</div>';
             /*Consulta para mostrar los 5 ultimas visitas*/
-            $sql = "SELECT v.IpJesuita,l.Nombre AS Lugar,v.FechaHora FROM visita v INNER JOIN maquina m ON m.Ip=v.IpLugar INNER JOIN lugar l ON m.IdLugar=l.IdLugar;";
+            $sql = "SELECT v.FechaHora,m.Jesuita,l.Nombre FROM visita v INNER JOIN maquina m ON m.Ip=v.IpJesuita INNER JOIN lugar l ON l.IdLugar=m.IdLugar;";
             //SELECT m.Jesuita,l.Nombre AS Lugar,v.FechaHora FROM visita v INNER JOIN maquina mj ON v.IpJesuita=mj.Ip INNER JOIN maquina m ON m.Ip=v.IpLugar INNER JOIN lugar l ON m.IdLugar=l.IdLugar
             $resultado=$ObjBBDD->ejecutarConsulta($sql);
             echo '<div>';
@@ -73,7 +73,7 @@ if ($ObjBBDD->comprobarConexion()) {
             if ($ObjBBDD->filasObtenidas($resultado) > 0) {
                 echo '<div id="ultimasVisitas">';
                 while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                    echo $fila["IpJesuita"] . ' ha visitado ' . $fila["Lugar"] . ' el dia '.$fila['FechaHora'].'<br>';
+                    echo $fila["Jesuita"] . ' ha visitado ' . $fila["Nombre"] . ' el dia '.$fila['FechaHora'].'<br>';
                 }
                 echo '</div>';
             } else {

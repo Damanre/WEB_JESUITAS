@@ -22,11 +22,17 @@
         }
 
         function comprobarConexion(){//Comprobar error de conexion
-            return $this->conexion->connect_error;
+            return $this->numeroError();
         }
 
         function comprobarError(){//comprobar error general
-            return $this->conexion->error;
+            $errno=$this->numeroError();
+            if($errno==1062){
+                $error="<span class='error'>ERROR: DATO REPETIDO</span><br>";
+            }else{
+                $error=$this->conexion->error;
+            }
+            return $error;
         }
 
         function filasObtenidas($resultado){//comprobar filas devueltas

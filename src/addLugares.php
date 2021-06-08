@@ -54,18 +54,23 @@ session_start();
                             echo "<br><a class='back' href='indexProfesor.php'>VOLVER</a>";
                         }
                     } else {
-                        $sql = 'INSERT INTO lugar (Nombre) VALUES ("' . $_POST['nombre'] . '");';//consulta agregar lugar
-                        $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
-                        if ($ObjBBDD->comprobarError()) {//comprobar error
-                            echo $ObjBBDD->comprobarError();
-                            echo "<br><a class='back' href='addLugares.php'>VOLVER</a>";
-                        } else {
-                            header("LOCATION:addLugares.php");
+                        if(empty($_POST["nombre"])){
+                            echo '<span class="error">NO PUEDES DEJAR EN BLANCO ESTE CAMPO</span><br>';//si no existe la maquina
+                            echo "<br><a href='addLugares.php'class='back'>VOLVER</a>";
+                        }else{
+                            $sql = 'INSERT INTO lugar (Nombre) VALUES ("' . $_POST['nombre'] . '");';//consulta agregar lugar
+                            $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
+                            if ($ObjBBDD->comprobarError()) {//comprobar error
+                                echo $ObjBBDD->comprobarError();
+                                echo "<br><a class='back' href='addLugares.php'>VOLVER</a>";
+                            } else {
+                                header("LOCATION:addLugares.php");
+                            }
                         }
                     }
                 }
             }else{
-                echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
+                echo '<span class="error">NO PUEDES ACCEDER A ESTE SITIO</span>
                     <br><a class="back" href="login.php">VOLVER</a>
                 ';
             }

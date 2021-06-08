@@ -13,7 +13,8 @@
             $ObjBBDD=new OperacionesBBDD();
             $ObjBBDD->conectarInstalador();//Conexion BBDD
             if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
-                echo '<h1>Error de conexión: ' . $ObjBBDD->comprobarConexion().'</h1>';//Mostrar Error
+                echo '<span class="error">Error de conexión: ' . $ObjBBDD->comprobarConexion().'</span>';//Mostrar Error
+                echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
             }else {
                 if (!isset($_POST["Instalar"])) {//formulario agregar super admin
                     echo '
@@ -32,30 +33,34 @@
                     </center>
                 ';
                 } else {
-                    if($_POST['pass'] != $_POST['pass2']){//comprobar que coinciden las contraseñas
-                        header('Location:inicio.php');//redireccion
-                    }
-                    $sql = file_get_contents("../sql/BBDD_Pruebas.sql");//consulta script bbdd
-                    $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
-                    if($ObjBBDD->comprobarError()){//comprobar error
-                        echo $ObjBBDD->comprobarError();
+                    if(empty($_POST["user"]) || empty($_POST["pass"]) || empty($_POST["pass2"])){
+                        echo '<span class="error">NO PUEDES DEJAR EN BLANCO NINGUN CAMPO</span><br>';//si no existe la maquina
                         echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                     }else{
-                        echo 'OK';
-                        echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
+                        if($_POST['pass'] != $_POST['pass2']){//comprobar que coinciden las contraseñas
+                            echo '<span class="error">NO COINCIDEN LAS CONTRASEÑAS</span><br>';//si no existe la maquina
+                            echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
+                        }
+                        $sql = file_get_contents("../sql/BBDD_Pruebas.sql");//consulta script bbdd
+                        $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
+                        if($ObjBBDD->comprobarError()) {//comprobar error
+                            echo $ObjBBDD->comprobarError();
+                            echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
+                        }else{
+                            $ObjBBDD->cerrarConexion();//cierre conexion
+                            sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
+                            $ObjBBDD->conectar();//conexion BBDD
+                            $sql = 'INSERT INTO usuario (Usuario,Pass,Tipo) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '", 1);';//consulta agregar admin
+                            $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
+                            if($ObjBBDD->comprobarError()){//comprobar error
+                                echo $ObjBBDD->comprobarError();
+                                echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
+                            }else{
+                                header("Location:login.php");//redireccion
+                            }
+                            $ObjBBDD->cerrarConexion();//cerrar conexion
+                        }
                     }
-                    $ObjBBDD->cerrarConexion();//cierre conexion
-                    sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
-                    $ObjBBDD->conectar();//conexion BBDD
-                    $sql = 'INSERT INTO usuario (Usuario,Pass,Tipo) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '", 1);';//consulta agregar admin
-                    $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
-                    if($ObjBBDD->comprobarError()){//comprobar error
-                        echo $ObjBBDD->comprobarError();
-                        echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
-                    }else{
-                        header("Location:login.php");//redireccion
-                    }
-                    $ObjBBDD->cerrarConexion();//cerrar conexion
                 }
             }
         ?>
