@@ -22,12 +22,12 @@ if ($ObjBBDD->comprobarConexion()) {
             echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><!--mostrar nombre de profesor-->
                 <br>
                 <!--Enlaces-->
-                <a href='addAlumno.php'>Añadir Alumno</a>
-                <br>
-                <a href='addMaquina.php'>Añadir Maquina</a>
-                <br>
-                <a href='addLugares.php'>Añadir Lugar</a>
-                <br>
+                <a class='opc' href='addAlumno.php'>Añadir Alumno</a>
+                <br><br>
+                <a class='opc' href='addMaquina.php'>Añadir Maquina</a>
+                <br><br>
+                <a class='opc' href='addLugares.php'>Añadir Lugar</a>
+                <br><br>
                 ";
             $sql = "select l.Nombre, count(v.IpLugar) contador from visita v INNER JOIN maquina m ON m.Ip=v.IpLugar INNER JOIN lugar l ON m.IdLugar=l.IdLugar group by v.IpLugar desc LIMIT 5";
             $resultado=$ObjBBDD->ejecutarConsulta($sql);

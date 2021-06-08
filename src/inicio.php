@@ -1,10 +1,11 @@
-<!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8"/>
-        <title>Instalacion</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>INSTALACION</title>
+    <link href="../style/estilo.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center>
         <?php
             require_once "Class_OperacionesBBDD.php";
             require_once "Class_OperacionesEXT.php";
@@ -58,5 +59,6 @@
                 }
             }
         ?>
+</center>
     </body>
 </html>
