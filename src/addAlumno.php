@@ -1,16 +1,18 @@
 <?php
-    session_start();
+session_start();
 ?>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8"/>
-        <title>ADD ALUMNO</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>ADD ALUMNO</title>
+    <link href="../style/estilo.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center>
         <?php
             if (isset($_SESSION["usuario"])) {
                 require_once "Class_OperacionesBBDD.php";
-                echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
+                echo "<br><a href='cerrarSesion.php'class='logout'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
                 $ObjBBDD=new OperacionesBBDD();
                 $ObjBBDD->conectar();//Conexion BBDD
@@ -26,8 +28,8 @@
                                     <input type="text" name="nombre" placeholder="Nombre Alumno" /></br></br>
                                     <label for="apellidos">APELLIDOS</label>
                                     <input type="text" name="apellidos" placeholder="Apellidos Alumno" /></br></br>
-                                    <input type="submit" name="Add" value="AÑADIR" />
-                                    <input type="reset" name="Cancelar" value="CANCELAR" />
+                                    <input type="submit" class="opc" name="Add" value="AÑADIR" />
+                                    <input type="reset" class="opc" name="Cancelar" value="CANCELAR" />
                                 </form>
                             </center>
                         ';
@@ -40,7 +42,7 @@
                             echo '<tr>';
                             echo '<th>Nombre</th><th>Apellidos</th>';
                             while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td><a href="delAlumno.php?id='.$fila["IdAlumno"].'">BORRAR</a></td></tr>';
+                                echo '<tr><td>' . $fila["Nombre"] . '</td><td>' . $fila["Apellidos"] . '</td><td><a href="delAlumno.php?id='.$fila["IdAlumno"].'"><img class="del" src="../style/imagenes/del.png"></a></td></tr>';
                             }
                             echo '</tr>';
                             echo '</table>';
@@ -48,16 +50,16 @@
                             echo ' No hay Alumnos';
                         }
                         if ($_SESSION["tipo"]==1){
-                            echo "<br><a href='indexAdmin.php'>VOLVER</a>";
+                            echo "<br><a href='indexAdmin.php'class='back'>VOLVER</a>";
                         }else{
-                            echo "<br><a href='indexProfesor.php'>VOLVER</a>";
+                            echo "<br><a href='indexProfesor.php'class='back'>VOLVER</a>";
                         }   
                     } else {
                         $sql = 'INSERT INTO alumno (Nombre, Apellidos) VALUES ("' . $_POST['nombre'] . '","' . $_POST['apellidos'] . '");';//consulta añadir alumno
                         $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
                         if ($error = $ObjBBDD->comprobarError()) {//Comprobar error
                             echo $error;
-                            echo "<br><a href='addAlumno.php'>VOLVER</a>";
+                            echo "<br><a href='addAlumno.php'class='back'>VOLVER</a>";
                         } else {
                             header("LOCATION:addAlumno.php");
                         }
@@ -65,9 +67,10 @@
                 }
             }else{
                 echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                    <br><a href="login.php">VOLVER</a>
+                    <br><a href="login.php"class="back">VOLVER</a>
                 ';
             }
         ?>
+</center>
     </body>
 </html>

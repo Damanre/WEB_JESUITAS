@@ -1,5 +1,15 @@
 <?php
 session_start();
+?>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ADD MAQUINA</title>
+    <link href="../style/estilo.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center>
+    <?php
 require_once "Class_OperacionesBBDD.php";
 $ObjBBDD=new OperacionesBBDD;
 $ObjBBDD->conectar();
@@ -8,7 +18,7 @@ if ($ObjBBDD->comprobarConexion()) {
 }else {
     if (isset($_SESSION["usuario"])) {
         if ($_SESSION["tipo"] == 0) {
-            echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
+            echo "<br><a href='cerrarSesion.php'class='logout'>CERRAR SESION</a>";
             echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><!--mostrar nombre de profesor-->
                 <br>
                 <!--Enlaces-->
@@ -72,13 +82,16 @@ if ($ObjBBDD->comprobarConexion()) {
             echo '</div>';
         } else {
             echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                    <br><a href="login.php">VOLVER</a>
+                    <br><a href="login.php"class="back">VOLVER</a>
                 ';
         }
     } else {
         echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                <br><a href="login.php">VOLVER</a>
+                <br><a href="login.php"class="back">VOLVER</a>
             ';
     }
 }
 ?>
+</center>
+</body>
+</html>

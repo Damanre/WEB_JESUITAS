@@ -3,7 +3,7 @@
 
     require_once "Class_OperacionesBBDD.php";
     if (isset($_SESSION["usuario"])) {
-        echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
+        echo "<br><a href='cerrarSesion.php'class='logout'>CERRAR SESION</a>";
         echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
         $ObjBBDD=new OperacionesBBDD();
         $ObjBBDD->conectar();
@@ -51,22 +51,22 @@
             }
             echo '
                         </select></br></br>
-                        <input type="submit" name="Add" value="GUARDAR" />
+                        <input type="submit" class="opc" name="Add" value="GUARDAR" />
                     </form>
                 </center>
             ';
-            echo "<br><a href='addMaquina.php'>VOLVER</a>";
+            echo "<br><a href='addMaquina.php'class='back'>VOLVER</a>";
 
 
         }else{
             echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                        <br><a href="login.php">VOLVER</a>
+                        <br><a href="login.php"class="back">VOLVER</a>
                     ';
         }
 
     }else{
         echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                        <br><a href="login.php">VOLVER</a>
+                        <br><a href="login.php"class="back">VOLVER</a>
                     ';
     }
 ?>

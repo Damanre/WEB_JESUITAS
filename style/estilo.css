@@ -17,7 +17,50 @@ body{
     margin:auto;
     margin-top: 100px;
     background-color: lightgray;
-    height: 600px;
+    min-height: 500px;
+    margin-bottom: 50px;
+    padding-bottom: 20px;
     width: 600px;
     border: 3px solid green;
+}
+.opc{
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px;
+    width: 150px;
+    color: white;
+    background-color: mediumseagreen;
+    border-radius: 10px;
+    border: 2px solid green;
+    font-weight: bold;
+}
+.logout{
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px;
+    width: 150px;
+    color: white;
+    background-color: darkred;
+    border-radius: 10px;
+    border: 2px solid red;
+    font-weight: bold;
+}
+.back{
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px;
+    width: 150px;
+    color: white;
+    background-color: darkcyan;
+    border-radius: 10px;
+    border: 2px solid darkcyan;
+    font-weight: bold;
+}
+.del{
+    height: 25px;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 1px;
+}
+.del:hover{
+    border-bottom: 2px solid darkgray;
 }

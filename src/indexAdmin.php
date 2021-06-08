@@ -1,29 +1,45 @@
 <?php
     session_start();
-
-    if (isset($_SESSION["usuario"])) {
-        if ($_SESSION["tipo"] == 1) {
-            echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
-            echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><!--mostrar nombre de admin-->
-            <br>
-            <!--Enlaces-->
-            <a href='addAlumno.php'>Añadir Alumno</a>
-            <br>
-            <a href='addMaquina.php'>Añadir Maquina</a>
-            <br>
-            <a href='addLugares.php'>Añadir Lugar</a>
-            <br>
-            <a href='addProfesor.php'>Añadir Profesor</a>
-            ";
-        } else {
-            echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                <br><a href="login.php">VOLVER</a>
-            ';
-        }
-    } else {
-        echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-            <br><a href="login.php">VOLVER</a>
-        ';
-    }
-
 ?>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ADMINISTRADOR</title>
+    <link href="../style/estilo.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center>
+    <body>
+        <?php
+            if (isset($_SESSION["usuario"])) {
+                if ($_SESSION["tipo"] == 1) {
+                    echo "<a class='logout' href='cerrarSesion.php'class='logout'>CERRAR SESION</a><br><br>";
+                    echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><!--mostrar nombre de admin-->
+                    <br>
+                    <!--Enlaces-->
+                    <a class='opc' href='addAlumno.php'>Añadir Alumno</a>
+                    <br>
+                    <br>
+                    <a class='opc' href='addMaquina.php'>Añadir Maquina</a>
+                    <br>
+                    <br>
+                    <a class='opc' href='addLugares.php'>Añadir Lugar</a>
+                    <br>
+                    <br>
+                    <a class='opc' href='addProfesor.php'>Añadir Profesor</a>
+                    ";
+                } else {
+                    echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
+                        <br><a class="back" href="login.php">VOLVER</a>
+                    ';
+                }
+            } else {
+                echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
+                    <br><a class="back" href="login.php">VOLVER</a>
+                ';
+            }
+        ?>
+    </body>
+</center>
+</body>
+</html>

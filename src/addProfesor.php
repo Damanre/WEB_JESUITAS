@@ -1,18 +1,20 @@
 <?php
-    session_start();
+session_start();
 ?>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8"/>
-        <title>ADD Profesor</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>ADD PROFESOR</title>
+    <link href="../style/estilo.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center>
         <?php
         if (isset($_SESSION["usuario"])){
             if ($_SESSION["tipo"]==1){
                 require_once "Class_OperacionesBBDD.php";
                 require_once "Class_OperacionesEXT.php";
-                echo "<br><a href='cerrarSesion.php'>CERRAR SESION</a>";
+                echo "<br><a href='cerrarSesion.php'class='logout'>CERRAR SESION</a>";
                 echo "<h1>Hola " . $_SESSION["usuario"] . "</h1><br>";
                 $ObjBBDD=new OperacionesBBDD();
                 $ObjBBDD->conectar();//Conexion BBDD
@@ -30,8 +32,8 @@
                                     <input type="password" name="pass" placeholder="Contraseña" /></br></br>
                                     <label for="pass2">REPETIR CONTRASEÑA</label>
                                     <input type="password" name="pass2" placeholder="Repetir Contraseña" /></br></br>
-                                    <input type="submit" name="Add" value="AÑADIR" />
-                                    <input type="reset" name="Cancelar" value="CANCELAR" />
+                                    <input type="submit" class="opc" name="Add" value="AÑADIR" />
+                                    <input type="reset" class="opc" name="Cancelar" value="CANCELAR" />
                                 </form>
                             </center>
                             ';
@@ -44,24 +46,24 @@
                                 echo '<tr>';
                                 echo '<th>Nombre</th>';
                                 while ($fila = $ObjBBDD->extraerFila($resultado)) {
-                                    echo '<tr><td>' . $fila["Usuario"] . '</td><td><a href="delProfesor.php?id='.$fila["IdUser"].'">BORRAR</a></td></tr>';
+                                    echo '<tr><td>' . $fila["Usuario"] . '</td><td><a href="delProfesor.php?id='.$fila["IdUser"].'"><img class="del" src="../style/imagenes/del.png"></a></td></tr>';
                                 }
                                 echo '</tr>';
                                 echo '</table>';
                             } else {
                                 echo ' No hay Profesores';
                             }
-                            echo "<br><a href='indexAdmin.php'>VOLVER</a>";
+                            echo "<br><a href='indexAdmin.php'class='back'>VOLVER</a>";
                     } else {
                         if ($_POST['pass'] != $_POST['pass2']) {//comprobar que coinciden las contraseñas
                             echo 'NO COINCIDEN LAS CONTRASEÑAS';
-                            echo "<br><a href='addProfesor.php'>VOLVER</a>";
+                            echo "<br><a href='addProfesor.php'class='back'>VOLVER</a>";
                         }else{
                            $sql = 'INSERT INTO usuario (Usuario,Pass) VALUES ("' . $_POST['user'] . '", "' . encriptar($_POST['pass']) . '");';//consulta añadir administrador
                             $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
                             if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                                 echo $error;
-                                echo "<br><a href='addMaquina.php'>VOLVER</a>";
+                                echo "<br><a href='addMaquina.php'class='back'>VOLVER</a>";
                             } else {
                                 header("LOCATION:addProfesor.php");
                             }
@@ -71,14 +73,15 @@
                 }
             }else{
                 echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                    <br><a href="login.php">VOLVER</a>
+                    <br><a href="login.php"class="back">VOLVER</a>
                 ';
             }
         }else{
             echo '<h1>NO PUEDES ACCEDER A ESTE SITIO</h1>
-                <br><a href="login.php">VOLVER</a>
+                <br><a href="login.php"class="back">VOLVER</a>
             ';
         }
         ?>
+</center>
     </body>
 </html>

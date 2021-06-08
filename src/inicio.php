@@ -25,8 +25,8 @@
                             <input type="password" name="pass" placeholder="Contraseña" /></br></br>
                             <label for="pass2">REPETIR CONTRASEÑA</label>
                             <input type="password" name="pass2" placeholder="Repetir Contraseña" /></br></br>
-                            <input type="submit" name="Instalar" value="INSTALAR" />
-                            <input type="reset" name="Cancelar" value="CANCELAR" />
+                            <input type="submit" class="opc" name="Instalar" value="INSTALAR" />
+                            <input type="reset" class="opc" name="Cancelar" value="CANCELAR" />
                         </form>
                     </center>
                 ';
@@ -38,10 +38,10 @@
                     $ObjBBDD->ejecutarMultiConsulta($sql);//ejecutar consulta
                     if($ObjBBDD->comprobarError()){//comprobar error
                         echo $ObjBBDD->comprobarError();
-                        echo "<br><a href='inicio.php'>VOLVER</a>";
+                        echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                     }else{
                         echo 'OK';
-                        echo "<br><a href='inicio.php'>VOLVER</a>";
+                        echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                     }
                     $ObjBBDD->cerrarConexion();//cierre conexion
                     sleep(2);//espera para que el servidor ejecute la consulta anterior a tiempo
@@ -50,7 +50,7 @@
                     $ObjBBDD->ejecutarConsulta($sql);//ejecutar consulta
                     if($ObjBBDD->comprobarError()){//comprobar error
                         echo $ObjBBDD->comprobarError();
-                        echo "<br><a href='inicio.php'>VOLVER</a>";
+                        echo "<br><a href='inicio.php'class='back'>VOLVER</a>";
                     }else{
                         header("Location:login.php");//redireccion
                     }
