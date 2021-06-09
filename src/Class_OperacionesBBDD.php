@@ -1,6 +1,9 @@
 <?php
     require_once "configDB.php";
     class OperacionesBBDD{
+
+        public $conexion;
+
         function conectarInstalador(){//conaxion BBDD Para instalacion
             $this->conexion= new mysqli(server,user,pass);
         }
