@@ -51,3 +51,11 @@ CREATE TABLE Visita(
                         CONSTRAINT CHK_IP CHECK (IpLugar<>IpJesuita)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 CREATE UNIQUE INDEX ipvisita ON Visita (IpLugar,IpJesuita);
+
+-- Estructura tabla Info_J
+CREATE TABLE informacion_J(
+                       IdInfo smallint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                       IpJesuita varchar(15),
+                       Descripcion varchar(255),
+                       CONSTRAINT ip FOREIGN KEY (IpJesuita) REFERENCES Maquina(Ip) ON DELETE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;

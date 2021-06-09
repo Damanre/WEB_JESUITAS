@@ -39,10 +39,6 @@
             return $resultado->num_rows;
         }
 
-        function filasAfectadas($resultado){//comprobar filas cambiadas
-            return $resultado->affected_rows;
-        }
-
         function extraerFila($resultado){//extraer consulta en array
             return $resultado->fetch_array(MYSQLI_ASSOC);
         }

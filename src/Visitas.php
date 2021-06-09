@@ -20,16 +20,42 @@ session_start();
                     if ($ObjBBDD->comprobarConexion()) {//Comprobar conexion BBDD
                         echo '<span class="error">Error de conexión: ' . $ObjBBDD->comprobarConexion() . '</span>';//Mostrar Error
                     } else {
-                        if(empty($_SESSION['jesuita'])){
+                        if(!isset($_SESSION['jesuita'])){
                             if(!isset($_POST['Add'])){
+                                $numero=0;
+                                if(isset($_POST["numero"])){
+                                    $numero=$_POST["numero"];
+                                }
                                 echo '
                                 <h1>ASIGNAR JESUITA</h1><br>
-                                <form action="#" method="post">
-                                    <label for="nombre">JESUITA</label>
-                                    <input type="text" name="nombre" placeholder="Nombre Jesuita" /></br></br>
-                                    <label for="firma">FIRMA</label>
-                                    <input type="text" name="firma" placeholder="Firma Jesuita" /></br></br>
-                                    <input class="opc" type="submit" name="Add" value="ASIGNAR" />
+                                <form action="Visitas.php?numero='.$numero.'" method="post">
+                                    <label for="nombre">JESUITA</label>';
+                                if(!isset($_POST["filas"])){
+                                    echo '<input type="text" name="nombre" placeholder="Nombre Jesuita" disabled/></br></br>';
+
+                                }else{
+                                    echo '<input type="text" name="nombre" placeholder="Nombre Jesuita" /></br></br>';
+
+                                }
+                                    echo '<label for="firma">FIRMA</label>';
+                                if(!isset($_POST["filas"])){
+                                    echo ' <input type="text" name="firma" placeholder="Firma Jesuita" disabled/></br></br>';
+                                }else{
+                                    echo ' <input type="text" name="firma" placeholder="Firma Jesuita" /></br></br>';
+                                }
+                                    if(!isset($_POST["filas"])){
+                                        echo '<form action="#" method="post">
+                                        <label for="numero">FILAS INFORMACION</label>
+                                        <input type="text" name="numero" placeholder="Numero de filas" />
+                                        <input class="opc" type="submit" name="filas" value="AGREGAR INFO" />
+                                        </form>';
+                                    }else{
+                                        echo '<h1>INFORMACION</h1><br>';
+                                            for($i=0;$i<$_POST["numero"];$i++){
+                                                echo '<input type="text" name="'.$i.'" placeholder="INFORMACION" /></br></br>';
+                                        }
+                                    }
+                                    echo '<br><input class="opc" type="submit" name="Add" value="ASIGNAR" />
                                 </form>
                             ';
                             }else{
@@ -38,6 +64,10 @@ session_start();
                                     echo "<br><a href='Visitas.php'class='back'>VOLVER</a>";
                                 }else{
                                     $sql = 'UPDATE maquina SET Jesuita="'.$_POST["nombre"].'",Firma="'.$_POST["firma"].'" WHERE Ip="'.$_SESSION["ip"].'";';//consulta agregar maquina
+                                    for($i=0;$i<$_GET["numero"];$i++){
+                                        $sql2 = 'INSERT INTO informacion_j (IpJesuita,Descripcion) VALUES ("' . $_SESSION['ip'] . '","'.$_POST[$i].'");';
+                                        $ObjBBDD->ejecutarConsulta( $sql2);
+                                    }
                                     $ObjBBDD->ejecutarConsulta( $sql);//ejecutar consulta
                                     if ($error = $ObjBBDD->comprobarError()) {//comprobar error
                                         echo $error;
